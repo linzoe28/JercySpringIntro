@@ -1,6 +1,17 @@
-# JavaFX_Snake
+# JavaFX_Snake Version 0.9.1 May-4-2018
 
-Update 0.9.0.1 May-4-2018
+New
+----
+Everything has been commented and explained in code.
+Score added, as well as the controls on screen.
+
+
+Bugs
+-----
+Strange glitch where grids shrink slightly when game begins.
+
+-------------------------------------------------------
+# JavaFX_Snake Version 0.9.0.1 May-4-2018
 
 Snake now dies. If it touches a wall, or itself. It pauses the game and resets player position randomly.
 
@@ -9,7 +20,7 @@ You can pause with Enter, and resume with any other key.
 
 
 ------------------------------------------------------
-
+# JavaFX_Snake Version 0.8 May-4-2018
 Basic Snake game running on JavaFX 2
 Decided to work on another little side project. 
 Using what I've learned so far in my Java course, I wanted to test my JavaFX knowledge with this little game.
