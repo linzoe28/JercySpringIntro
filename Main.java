@@ -1,5 +1,5 @@
 //EliotCodeHub 2018
-
+//Version alpha 0.8
 package App;
 
 import javafx.animation.KeyFrame;
