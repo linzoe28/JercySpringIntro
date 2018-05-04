@@ -3,12 +3,23 @@
 New
 ----
 Everything has been commented and explained in code.
+
 Score added, as well as the controls on screen.
+
+Player position is initialized randomly, and placed randomly if you game over.
 
 
 Bugs
 -----
 Strange glitch where grids shrink slightly when game begins.
+
+New Focus
+----
+Find a way to gradually increase speed a game progresses
+
+Fix strange visual glitch.
+
+Find good background color.
 
 -------------------------------------------------------
 # JavaFX_Snake Version 0.9.0.1 May-4-2018
