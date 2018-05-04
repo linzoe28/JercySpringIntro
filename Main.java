@@ -1,5 +1,6 @@
 //EliotCodeHub 2018
-//Version alpha 0.8
+//Version Alpha 0.9.0.1
+//May 5 2018
 package App;
 
 import javafx.animation.KeyFrame;
@@ -23,7 +24,7 @@ import java.util.Random;
 
 class Snake
         {
-          public  Rectangle body = new Rectangle(10,10,Color.WHITE);
+          public  Rectangle body = new Rectangle(12,12,Color.WHITE);
           private int Xpos;
           private int Ypos;
           private int oldXpos;
@@ -50,6 +51,12 @@ class Snake
 
           public int getOldYpos()
             {return oldYpos;}
+
+          public int getXpos()
+           {return Xpos; }
+
+           public int getYpos()
+           {return Ypos; }
         }
 
 
@@ -63,7 +70,7 @@ public class Main extends Application
     GridPane GameGrid = new GridPane();
 
     ArrayList<Snake> SnakeP = new ArrayList<>(0);
-
+    Timeline Loop;
 
 
     int mX = 1, mY = 0;
@@ -72,21 +79,27 @@ public class Main extends Application
     double speed = 1/15.0;
     //Thread thread;
 
-    int GridSizeSquared = 15;
+    int GridSizeSquared = 20;
 
-    Rectangle Food = new Rectangle(10,10,Color.ORANGE);
+    Rectangle Food = new Rectangle(12,12,Color.ORANGE);
     int foodN = 0;
     int FoodPosX = new Random().nextInt(GridSizeSquared);
     int FoodPosY = new Random().nextInt(GridSizeSquared);
+
+    boolean start = false;
 
     public void start(Stage PrimaryStage)
     {
         FillGrid(GameGrid);
         SnakeP.add(new Snake(posX, posY));
 
-        //GameGrid.setGridLinesVisible(true);
+       // GameGrid.setGridLinesVisible(true);
         GameGrid.setVgap(1.5);
         GameGrid.setHgap(1.5);
+        //`GameGrid.setMinHeight(10);
+        //GameGrid.setMinWidth(10);
+        //GameGrid.setMaxHeight(10*GridSizeSquared);
+        //GameGrid.setMaxWidth(10*GridSizeSquared);
 
         GameGrid.add(Food, FoodPosX,FoodPosY);
         GameGrid.add(SnakeP.get(0).body, posX,posY);
@@ -96,7 +109,7 @@ public class Main extends Application
 
 
         Scene Game = new Scene(GameGrid);
-        Game.setFill(Color.MEDIUMAQUAMARINE);
+        Game.setFill(Color.BLACK);
 
 
 
@@ -120,7 +133,7 @@ public class Main extends Application
         //thread.setDaemon(true);
         //thread.start();
 
-        Timeline Loop = new Timeline(new KeyFrame(Duration.seconds(speed), new EventHandler<ActionEvent>() {
+         Loop = new Timeline(new KeyFrame(Duration.seconds(speed), new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent event) {
@@ -131,7 +144,7 @@ public class Main extends Application
             }
         }));
         Loop.setCycleCount(Timeline.INDEFINITE);
-        Loop.play();
+        //Loop.play();
 
 
     }
@@ -139,13 +152,18 @@ public class Main extends Application
     public void MoveChar()
     {
         if(mX == -1 && (posX == 0))
-        { }
+        {Die();
+         mX =0;
+        }
         else if(mY == -1 && (posY == 0))
-        { }
+        { Die();
+            mY =0;
+        }
         else if(mX == 1 && (posX == GridSizeSquared-1))
-        { }
+        { Die(); mX =0;}
         else if(mY == 1 && (posY == GridSizeSquared-1))
-        { }
+        {Die(); mY =0; }
+
 
         else
             {
@@ -174,6 +192,15 @@ public class Main extends Application
                 Grow();
                }
 
+                for(int x = 1; x<SnakeP.size();x++)
+                {
+                    if(posX == SnakeP.get(x).getXpos() && posY == SnakeP.get(x).getYpos() )
+                    {
+                        Die();
+                    }
+                }
+
+
             }
 
 
@@ -183,6 +210,18 @@ public class Main extends Application
 
     public void KeyPressedProcess(KeyEvent event)
     {
+        if(start == false)
+        {
+            Loop.play();
+            start = true;
+        }
+
+        if (event.getCode() == KeyCode.ENTER)
+        {
+            Loop.stop();
+            start = false;
+        }
+
         if(mY ==0 && (event.getCode() == KeyCode.W || event.getCode() == KeyCode.UP))
         {
             mX = 0;
@@ -214,10 +253,10 @@ public class Main extends Application
     {
         for(int x =0;x<GridSizeSquared;x++)
         {
-            GameGrid.addColumn(x,new Rectangle(10,10, Color.GRAY));
+            GameGrid.addColumn(x,new Rectangle(12,12, Color.GRAY));
 
            for(int y = 1; y < GridSizeSquared;y++)
-            GameGrid.addRow(y,new Rectangle(10,10, Color.GRAY));
+            GameGrid.addRow(y,new Rectangle(12,12, Color.GRAY));
 
         }
 
@@ -241,15 +280,41 @@ public class Main extends Application
     public void Grow()
     {
         SnakeP.add(new Snake(SnakeP.get(SnakeP.size()-1).getOldXpos(),
-                SnakeP.get(SnakeP.size()-1).getOldXpos()));
+                SnakeP.get(SnakeP.size()-1).getOldYpos()));
 
         GameGrid.add(SnakeP.get(SnakeP.size()-1).body,
                 SnakeP.get(SnakeP.size()-1).getOldXpos(),
-                SnakeP.get(SnakeP.size()-1).getOldXpos());
+                SnakeP.get(SnakeP.size()-1).getOldYpos());
 
         PlaceFood();
 
     }
 
+
+    public void Die()
+    {
+
+        int size = SnakeP.size();
+
+        for(int x = size-1; x>0;x--)
+        {
+            GameGrid.getChildren().remove(SnakeP.get(x).body);
+
+        }
+        for(int x = size-1; x>0;x--)
+        SnakeP.remove(x);
+
+        start = false;
+        Loop.stop();
+
+        posX = new Random().nextInt(GridSizeSquared);
+        posY = new Random().nextInt(GridSizeSquared);
+
+        GameGrid.getChildren().remove(SnakeP.get(0).body);
+        GameGrid.add(SnakeP.get(0).body,posX,posY);
+        SnakeP.get(0).setPos(posX,posY);
+
+
+    }
 
 }
