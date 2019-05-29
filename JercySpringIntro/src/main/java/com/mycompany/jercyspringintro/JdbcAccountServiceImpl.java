@@ -58,12 +58,13 @@ public class JdbcAccountServiceImpl implements AccountService{
 
     @Override
     public void updateAccount(Account account) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       jdbcTemplate.update("update account set password=?,email=? where id=?",
+               account.getPassword(),account.getEmail(),account.getId());
     }
 
     @Override
     public void removeAccount(String id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+      jdbcTemplate.update("delete from account where id=?",id);
     }
     
 }

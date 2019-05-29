@@ -3,10 +3,32 @@
     <head>
         <title>Start Page</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+        <script>
+            function add(){
+                let data={
+                  id:$("#id").val(),
+                  password:$("#password").val(),
+                  email:$("#email").val()
+                };
+                $.ajax("webapi/accounts",{
+                    type:"POST",
+                    contentType:"application/json",
+                    data:JSON.stringify(data),
+                    success:function(d){
+                        alert("success!");
+                    },
+                    error:function(){
+                        alert("failed");
+                    }
+                });
+            }
+        </script>
     </head>
     <body>
         ID:<input type="text" id="id"/><br/>
         Password:<input type="text" id="password"/><br/>
         Email:<input type="text" id="email"/><br/>
+        <input type="button" value="add" onclick="add();"/>
     </body>
 </html>
