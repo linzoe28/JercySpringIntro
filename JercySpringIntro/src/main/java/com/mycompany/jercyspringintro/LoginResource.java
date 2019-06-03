@@ -9,6 +9,7 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -35,8 +36,8 @@ public class LoginResource {
     }
 
     @DELETE
-    @Path("id")
-    public boolean logout(@FormParam("id") String id) {
+    @Path("{id}")
+    public boolean logout(@PathParam("id") String id) {
         return this.loginService.logout(id);
     }
 
